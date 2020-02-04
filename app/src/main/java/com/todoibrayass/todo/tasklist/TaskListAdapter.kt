@@ -10,3 +10,4 @@ class TaskListAdapter(private val taskList: List<String>) : RecyclerView.Adapter
         }
     }
 }
+

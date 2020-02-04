@@ -23,8 +23,8 @@ class TaskListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.adapter = TaskListAdapter(taskList, taskList)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler)
+        recyclerView.adapter = TaskListAdapter(taskList)
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
 
