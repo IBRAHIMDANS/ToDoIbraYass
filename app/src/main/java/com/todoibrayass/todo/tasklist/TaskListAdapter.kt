@@ -6,14 +6,21 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.todoibrayass.todo.R
 import kotlinx.android.synthetic.main.item_task.view.*
-import java.util.*
 
 class TaskListAdapter(private val taskList: List<Task>) :
     RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
+
+    var onDeleteClickListener: (Task) -> Unit = {  }
+
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(task: Task) {
             itemView.task_title.text = task.title
             itemView.task_description.text = task.description
+            itemView.deleteTask.setOnClickListener {
+               onDeleteClickListener.invoke(task)
+            }
+
+
         }
     }
 
@@ -30,6 +37,8 @@ class TaskListAdapter(private val taskList: List<Task>) :
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.bind(taskList[position])
     }
+
+
 
 }
 

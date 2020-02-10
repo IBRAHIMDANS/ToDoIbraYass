@@ -13,6 +13,7 @@ import java.util.*
 
 class TaskListFragment : Fragment() {
     //   private val taskList = listOf("Task 1", "Task 2", "Task 3","Task 1", "Task 2", "Task 3","Task 1", "Task 2", "Task 3")
+    lateinit var taskAdapter: TaskListAdapter
     private val taskList = mutableListOf(
         Task(id = "id_1", title = "Task 1", description = "description 1"),
         Task(id = "id_2", title = "Task 2"),
@@ -24,19 +25,31 @@ class TaskListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         return inflater.inflate(R.layout.fragment_task_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler)
-        recyclerView.adapter = TaskListAdapter(taskList)
+        taskAdapter = TaskListAdapter(taskList)
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        floatingActionButton3.setOnClickListener {
-            taskList.add(Task(id = UUID.randomUUID().toString(), title = "Task ${taskList.size + 1}"))
-            recycler.adapter?.notifyDataSetChanged()
-        }
+        recyclerView.adapter = taskAdapter
 
+        floatingActionButton3.setOnClickListener {
+            taskList.add(
+                Task(
+                    id = UUID.randomUUID().toString(),
+                    title = "Task ${taskList.size + 1}"
+                )
+            )
+            taskAdapter.notifyDataSetChanged()
+
+        }
+        taskAdapter.onDeleteClickListener = { task  ->
+            taskList.remove(task)
+            taskAdapter.notifyDataSetChanged()
+        }
     }
 
 
