@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.todoibrayass.todo.R
 import com.todoibrayass.todo.tasklist.Task
 import kotlinx.android.synthetic.main.task_activity.*
+import java.io.Serializable
 import java.util.*
 
 
@@ -30,7 +31,7 @@ class TaskActivity : AppCompatActivity() {
                     title = title.text.toString(),
                     description = desc.text.toString()
                 )
-           val intentTask =  intent.putExtra("myTask", sendTask)
+           val intentTask =  intent.putExtra("myTask", sendTask as Serializable)
             setResult(Activity.RESULT_OK, intentTask)
             finish()
         }

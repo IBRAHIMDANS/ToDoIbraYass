@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.todoibrayass.todo.R
 import com.todoibrayass.todo.task.TaskActivity
 import kotlinx.android.synthetic.main.fragment_task_list.*
+import java.io.Serializable
 
 class TaskListFragment : Fragment() {
     //   private val taskList = listOf("Task 1", "Task 2", "Task 3","Task 1", "Task 2", "Task 3","Task 1", "Task 2", "Task 3")
@@ -55,12 +56,14 @@ class TaskListFragment : Fragment() {
             taskAdapter.notifyDataSetChanged()
         }
         taskAdapter.onEditClickListener = { task ->
-            /*           Log.e("task", task.toString())
-                        taskAdapter.notifyDataSetChanged()*/
             val intent = Intent(activity, TaskActivity::class.java)
-            intent.putExtra("editTask", task)
+            intent.putExtra("editTask", task as Serializable)
             startActivityForResult(intent, EDIT_TASK_REQUEST_CODE)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
