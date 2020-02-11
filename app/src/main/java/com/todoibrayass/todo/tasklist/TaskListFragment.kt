@@ -49,7 +49,7 @@ class TaskListFragment : Fragment() {
                   )
               )*/
             // taskAdapter.notifyDataSetChanged()
-
+savedInstanceState
         }
         taskAdapter.onDeleteClickListener = { task ->
             taskList.remove(task)
@@ -64,6 +64,7 @@ class TaskListFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
