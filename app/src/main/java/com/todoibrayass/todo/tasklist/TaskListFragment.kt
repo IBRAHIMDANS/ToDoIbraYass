@@ -1,5 +1,6 @@
 package com.todoibrayass.todo.tasklist
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.todoibrayass.todo.R
+import com.todoibrayass.todo.task.TaskActivity
 import kotlinx.android.synthetic.main.fragment_task_list.*
-import java.util.*
 
 class TaskListFragment : Fragment() {
     //   private val taskList = listOf("Task 1", "Task 2", "Task 3","Task 1", "Task 2", "Task 3","Task 1", "Task 2", "Task 3")
@@ -37,19 +38,31 @@ class TaskListFragment : Fragment() {
         recyclerView.adapter = taskAdapter
 
         floatingActionButton3.setOnClickListener {
-            taskList.add(
+            val intent = Intent(activity, TaskActivity::class.java)
+            startActivityForResult(intent, ADD_TASK_REQUEST_CODE)
+          /*  taskList.add(
                 Task(
                     id = UUID.randomUUID().toString(),
                     title = "Task ${taskList.size + 1}"
                 )
-            )
-            taskAdapter.notifyDataSetChanged()
+            )*/
+           // taskAdapter.notifyDataSetChanged()
 
         }
         taskAdapter.onDeleteClickListener = { task  ->
             taskList.remove(task)
             taskAdapter.notifyDataSetChanged()
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val task = data!!.getSerializableExtra("myTask") as Task
+        taskList.add(task)
+        taskAdapter.notifyDataSetChanged()
+    }
+    companion object  {
+        const val ADD_TASK_REQUEST_CODE = 200
     }
 
 
