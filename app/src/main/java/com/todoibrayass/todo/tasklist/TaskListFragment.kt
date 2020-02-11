@@ -10,14 +10,19 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.todoibrayass.todo.R
+import com.todoibrayass.todo.network.Api
 import com.todoibrayass.todo.task.TaskActivity
 import kotlinx.android.synthetic.main.fragment_task_list.*
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import java.io.Serializable
 import java.util.*
 
 class TaskListFragment : Fragment() {
     //   private val taskList = listOf("Task 1", "Task 2", "Task 3","Task 1", "Task 2", "Task 3","Task 1", "Task 2", "Task 3")
     lateinit var taskAdapter: TaskListAdapter
+    private val coroutineScope = MainScope()
     private val taskList = mutableListOf(
         Task(id = "id_1", title = "Task 1", description = "description 1"),
         Task(id = "id_2", title = "Task 2"),
@@ -31,6 +36,18 @@ class TaskListFragment : Fragment() {
     ): View? {
 
         return inflater.inflate(R.layout.fragment_task_list, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Utilisation:
+        coroutineScope.launch {
+            val userInfo = Api.userService.getInfo().body()!!
+        }
+        // Suppression dans onDestroy():
+        coroutineScope.cancel()
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -71,7 +88,7 @@ class TaskListFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList("taskList",  taskList as ArrayList<Task>)
+        outState.putParcelableArrayList("taskList", taskList as ArrayList<Task>)
 
     }
 
