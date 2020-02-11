@@ -13,6 +13,7 @@ import com.todoibrayass.todo.R
 import com.todoibrayass.todo.task.TaskActivity
 import kotlinx.android.synthetic.main.fragment_task_list.*
 import java.io.Serializable
+import java.util.*
 
 class TaskListFragment : Fragment() {
     //   private val taskList = listOf("Task 1", "Task 2", "Task 3","Task 1", "Task 2", "Task 3","Task 1", "Task 2", "Task 3")
@@ -35,6 +36,12 @@ class TaskListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler)
+
+        savedInstanceState?.getParcelableArrayList<Task>("taskList")?.let { savedList ->
+            taskList.clear()
+            taskList.addAll(savedList)
+        }
+
         taskAdapter = TaskListAdapter(taskList)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = taskAdapter
@@ -49,7 +56,7 @@ class TaskListFragment : Fragment() {
                   )
               )*/
             // taskAdapter.notifyDataSetChanged()
-savedInstanceState
+
         }
         taskAdapter.onDeleteClickListener = { task ->
             taskList.remove(task)
@@ -64,6 +71,7 @@ savedInstanceState
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        outState.putParcelableArrayList("taskList",  taskList as ArrayList<Task>)
 
     }
 
