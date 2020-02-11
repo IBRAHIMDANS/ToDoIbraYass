@@ -1,5 +1,6 @@
 package com.todoibrayass.todo.tasklist
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -40,29 +41,49 @@ class TaskListFragment : Fragment() {
         floatingActionButton3.setOnClickListener {
             val intent = Intent(activity, TaskActivity::class.java)
             startActivityForResult(intent, ADD_TASK_REQUEST_CODE)
-          /*  taskList.add(
-                Task(
-                    id = UUID.randomUUID().toString(),
-                    title = "Task ${taskList.size + 1}"
-                )
-            )*/
-           // taskAdapter.notifyDataSetChanged()
+            /*  taskList.add(
+                  Task(
+                      id = UUID.randomUUID().toString(),
+                      title = "Task ${taskList.size + 1}"
+                  )
+              )*/
+            // taskAdapter.notifyDataSetChanged()
 
         }
-        taskAdapter.onDeleteClickListener = { task  ->
+        taskAdapter.onDeleteClickListener = { task ->
             taskList.remove(task)
             taskAdapter.notifyDataSetChanged()
+        }
+        taskAdapter.onEditClickListener = { task ->
+            /*           Log.e("task", task.toString())
+                        taskAdapter.notifyDataSetChanged()*/
+            val intent = Intent(activity, TaskActivity::class.java)
+            intent.putExtra("editTask", task)
+            startActivityForResult(intent, EDIT_TASK_REQUEST_CODE)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val task = data!!.getSerializableExtra("myTask") as Task
-        taskList.add(task)
-        taskAdapter.notifyDataSetChanged()
+        if (requestCode == ADD_TASK_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val task = data!!.getSerializableExtra(ADD_TASK_NAME) as Task
+            taskList.add(task)
+            taskAdapter.notifyDataSetChanged()
+        }
+        if (requestCode == EDIT_TASK_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val task = data!!.getSerializableExtra(ADD_TASK_NAME) as Task
+            var index = taskList.indexOfFirst { it.id == task.id }
+
+            taskList[index] = task
+            // taskList.set(index, task)
+            taskAdapter.notifyDataSetChanged()
+        }
     }
-    companion object  {
+
+    companion object {
         const val ADD_TASK_REQUEST_CODE = 200
+        const val EDIT_TASK_REQUEST_CODE = 201
+        const val ADD_TASK_NAME = "myTask"
     }
 
 

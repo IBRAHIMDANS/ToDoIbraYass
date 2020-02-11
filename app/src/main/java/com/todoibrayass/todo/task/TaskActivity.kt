@@ -14,14 +14,21 @@ class TaskActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.task_activity)
-        val desc = descEditText?.text
-        val title = titleEditText?.text
+        val desc = descEditText
+        val title = titleEditText
+        val task = intent?.getSerializableExtra("editTask") as? Task
+        var id = UUID.randomUUID().toString()
+        if (task != null ) {
+            id = task.id
+            title.setText(task.title)
+            desc.setText(task.description)
+        }
         validateTask.setOnClickListener {
             val sendTask =
                 Task(
-                    id = UUID.randomUUID().toString(),
-                    title = title.toString(),
-                    description = desc.toString()
+                    id =id,
+                    title = title.text.toString(),
+                    description = desc.text.toString()
                 )
            val intentTask =  intent.putExtra("myTask", sendTask)
             setResult(Activity.RESULT_OK, intentTask)

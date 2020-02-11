@@ -2,6 +2,7 @@
     <string name="app_name">ToDo </string>
     <string name="Hello_World"> Hello World </string>
     <string name="deleteBtn"> Delete </string>
+    <string name="editBtn"> Edit Task </string>
     <string name="title">Title</string>
     <string name="desc">Description</string>
     <string name="validate">Validate</string>
